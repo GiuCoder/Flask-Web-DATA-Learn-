@@ -112,7 +112,7 @@ def admin_permission(name, mail, passwords, ip_address, admin_password):
     print(f"Name: {name}\nMail: {mail}\nPasswords: {passwords}\nIP Address: {ip_address}\n")
     admin_input = input("admin >> joined, granted? (Y/N): ")
     if admin_input.lower() == "y":
-        admin_pass_input = input("Enter admin password: ")
+        admin_pass_input = input("Enter admin password (see on folders): ")
 
         # Read the admin password from the file
         with open("admin_password.txt", "r") as file:
