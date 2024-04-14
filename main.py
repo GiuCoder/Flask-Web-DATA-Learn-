@@ -101,39 +101,8 @@ scheduler.start()
 # Make sure to stop the scheduler when the application exits
 atexit.register(lambda: scheduler.shutdown())
 
-@app.route('/')
-def home():
-    return render_template('index.html')
-
-@app.route('/post', methods=['POST'])
-def post():
-    try:
-        if request.method == 'POST':
-            name = request.form['name']
-            passwords = request.form['password']
-            mail = request.form['mail']
-            ip_address = get_ip_address()  # Get user's IP address
-
-            # Prompt for admin permission
-            if not admin_permission(name, mail, passwords, ip_address):
-                return render_template("admin_rejected.html")
-            else:
-                # Check password and email requirements
-                pass_length = len(passwords)
-                if pass_length >= 8:
-                    print("Received name:", name)
-                    print("Received email:", mail)
-                    print("Received pass:", passwords)
-                    # Save client information to a file
-                    save_client_info(name, mail, ip_address)
-                    return render_template("post.html", name=name, passwords=passwords, mail=mail, ip=ip_address)
-                else:
-                    return render_template("error_connects.html")
-    except Exception as e:
-        print("ERROR: ", e)
-        return render_template("error_connect.html")
-
-def admin_permission(name, mail, passwords, ip_address):
+# Updated admin_permission function
+def admin_permission(name, mail, passwords, ip_address, admin_password):
     # Write the randomly generated admin password to a file
     with open("admin_password.txt", "w") as file:
         file.write(admin_password)
@@ -154,7 +123,40 @@ def admin_permission(name, mail, passwords, ip_address):
 
         return admin_pass_input == stored_admin_password
     else:
+        print("WRONG ADMIN PASS, USER HAS BEEN REJECTED FROM LOGGING IN!")
         return False
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/post', methods=['POST'])
+def post():
+    try:
+        if request.method == 'POST':
+            name = request.form['name']
+            passwords = request.form['password']
+            mail = request.form['mail']
+            ip_address = get_ip_address()  # Get user's IP address
+
+            # Prompt for admin permission
+            if not admin_permission(name, mail, passwords, ip_address, admin_password):
+                return render_template("admin_rejected.html")
+            else:
+                # Check password and email requirements
+                pass_length = len(passwords)
+                if pass_length >= 8:
+                    print("Received name:", name)
+                    print("Received email:", mail)
+                    print("Received pass:", passwords)
+                    # Save client information to a file
+                    save_client_info(name, mail, ip_address)
+                    return render_template("post.html", name=name, passwords=passwords, mail=mail, ip=ip_address)
+                else:
+                    return render_template("error_connects.html")
+    except Exception as e:
+        print("ERROR: ", e)
+        return render_template("error_connect.html")
 
 def save_client_info(name, mail, ip_address):
     # Create the CLIENT_INFO directory if it doesn't exist
