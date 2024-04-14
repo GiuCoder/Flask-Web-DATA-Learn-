@@ -1,0 +1,193 @@
++-----------------+
+|   Start Point   |
++--------+--------+
+         |
+         V
+    +----+----+
+    |   Imports |        -------------> FLASK, TIME, collections, apscheduler, random, string, os
+    +-----------+
+         |
+         V
+ +-------+---------+
+ | Flask Setup     |
+ +-------+---------+
+ |   - Functionality: Set up Flask application
+ |   > from flask import Flask, render_template, request, abort
+ |   > import time
+ |   > from collections import defaultdict
+ |   > from apscheduler.schedulers.background import BackgroundScheduler
+ |   > import atexit
+ |   > import random
+ |   > import string
+ |   > import os
+ +-------+---------+
+         |
+         V
+ +-------+---------+
+ | Random Password |
+ |   Generation    |
+ +-------+---------+
+ |   - Functionality: Generate random passwords for admin access
+ |   > def generate_random_password(length=8):
+ |   >     chars = string.ascii_letters + string.digits + string.punctuation
+ |   >     return ''.join(random.choice(chars) for _ in range(length))
+ |   > admin_password = generate_random_password()
+ +-------+---------+
+         |
+         V
+ +-------+---------+
+ | Admin Password  |
+ |   Generation    |
+ +-------+---------+
+ |   - Functionality: Generate and store a random admin password
+ |   > admin_password = generate_random_password()
+ +-------+---------+
+         |
+         V
+ +-------+---------+
+ | IP Address      |
+ |   Retrieval     |
+ +-------+---------+
+ |   - Functionality: Retrieve user's public IP address (dummy in local environment)
+ |   > def get_ip_address():
+ |   >     try:
+ |   >         return "127.0.0.1"  # In local environment, return dummy IP
+ |   >     except Exception as e:
+ |   >         print("Error getting IP address:", e)
+ |   >         return None
+ +-------+---------+
+         |
+         V
+ +-------+---------+
+ | Abnormal        |
+ |   Activity      |
+ |   Handling      |
+ +-------+---------+
+ |   - Functionality: Handle abnormal activity, ban IP addresses if necessary
+ |   > def handle_abnormal_activity(ip):
+ |   >     ban_expiration = time.time() + BAN_DURATION
+ |   >     ip_blacklist[ip] = ban_expiration
+ |   >     with open("ipblocked.txt", "a") as file:
+ |   >         file.write(ip + "\n")
+ |   >     print(f"IP address {ip} has been banned until {time.ctime(ban_expiration)}")
+ +-------+---------+
+         |
+         V
+ +-------+---------+
+ | Middleware for  |
+ |   Rate Limiting |
+ |   and IP        |
+ |   Blacklisting  |
+ +-------+---------+
+ |   - Functionality: Enforce rate limiting and IP blacklisting to prevent DDOS attacks
+ |   > @app.before_request
+ |   > def protect_against_ddos():
+ |   >     ip = request.remote_addr
+ |   >     current_time = time.time()
+ |   >     if ip in ip_blacklist:
+ |   >         if current_time < ip_blacklist[ip]:
+ |   >             return abort(403)
+ |   >         else:
+ |   >             del ip_blacklist[ip]
+ |   >     ip_access_counts[ip] += 1
+ |   >     ip_last_access[ip] = current_time
+ |   >     if ip_access_counts[ip] > RATE_LIMIT:
+ |   >         handle_abnormal_activity(ip)
+ |   >         return abort(429)
+ +-------+---------+
+         |
+         V
+ +-------+---------+
+ | File Operations |
+ |   for IP        |
+ |   Blacklist     |
+ +-------+---------+
+ |   - Functionality: Read and write blocked IP addresses to a file
+ |   > def block_blocked_ips():
+ |   >     try:
+ |   >         with open("ipblocked.txt", "r") as file:
+ |   >             blocked_ips = file.readlines()
+ |   >             for ip in blocked_ips:
+ |   >                 ip = ip.strip()
+ |   >                 ip_blacklist[ip] = time.time() + BAN_DURATION
+ |   >     except FileNotFoundError:
+ |   >         pass
+ +-------+---------+
+         |
+         V
+ +-------+---------+
+ | Periodic Cleanup|
+ |   and IP        |
+ |   Blocking      |
+ +-------+---------+
+ |   - Functionality: Periodic cleanup of IP access counts and blocking of IPs
+ |   > scheduler.add_job(clear_ip_access_counts, 'interval', seconds=SCHEDULE_INTERVAL)
+ |   > scheduler.add_job(block_blocked_ips, 'interval', seconds=10)
+ |   > scheduler.start()
+ |   > atexit.register(lambda: scheduler.shutdown())
+ +-------+---------+
+         |
+         V
+ +-------+---------+
+ |  Application    |
+ |   Startup       |
+ +-------+---------+
+ |   - Functionality: Start the Flask application, block IPs from ipblocked.txt
+ |   > block_blocked_ips()
+ |   > app.run(debug=True)
+ +-------+---------+
+         |
+         V
++--------+--------+
+
+
++--------+--------+
+ |   Output Examples   |
+ +--------+--------+
+         |
+         V
+ +-------+---------+
+ |   Error Handling  |
+ +-------+---------+
+ |   - Example: Error message if there's an issue getting the IP address
+ |   > "Error getting IP address: <error_message>"
+ +-------+---------+
+         |
+         V
+ +-------+---------+
+ |   Request Handling  |
+ +-------+---------+
+ |   - Example: Abort request if IP is blacklisted or rate limit exceeded
+ |   > HTTP 403 Forbidden (if IP is blacklisted)
+ |   > HTTP 429 Too Many Requests (if rate limit exceeded)
+ +-------+---------+
+         |
+         V
+ +-------+---------+
+ |   Admin Permission  |
+ +-------+---------+
+ |   - Example: Prompt for admin permission and enter admin password
+ |   > "INFORMATION OF USER TRYING TO ACCESS:"
+ |   > "Name: <name>"
+ |   > "Mail: <mail>"
+ |   > "Passwords: <passwords>"
+ |   > "IP Address: <ip_address>"
+ |   > "admin >> joined, granted? (Y/N): "
+ |   > "Enter admin password: "
+ +-------+---------+
+         |
+         V
+ +-------+---------+
+ |   Client Information |
+ +-------+---------+
+ |   - Example: Display client information after admin permission granted
+ |   > "Received name: <name>"
+ |   > "Received email: <mail>"
+ |   > "Received pass: <passwords>"
+ |   > "Saved client information to file."
+ |   > Render template with client details.
+ +-------+---------+
+         |
+         V
++--------+--------+
+
