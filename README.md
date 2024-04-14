@@ -178,7 +178,7 @@ python3 main.py
 
 # How to use it when admin password
 
-Note: *When user loggin in procceed on suumbit, admin must enter option grant or not, then input password (password stored in the folders)*
+Note: *When user loggin in procceed on submit, admin must enter option yes or not, then input password (password stored in the folders)*
 
 # Features
 Rate limiting: Limit the number of requests per minute per IP address.
