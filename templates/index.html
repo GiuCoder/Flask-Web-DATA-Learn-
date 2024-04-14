@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+        .card {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 20px; /* Adjusted border-radius */
+            box-shadow: 0 2px 4px rgba(100, 100, 0, 0.1); /* Define box shadow with proper values */
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px; /* Adjusted border-radius */
+            box-sizing: border-box;
+        }
+        input[type="text"]:hover,
+        input[type="email"]:hover,
+        input[type="password"]:hover {
+            border: 1px solid blue;
+            transition: all 0.3s; /* Reduced transition duration */
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            opacity: 0.8; /* Adjusted opacity */
+            color: #fff;
+            border: none;
+            border-radius: 10px; /* Adjusted border-radius */
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>Welcome Login</h1>
+    <form action="/post" method="POST">
+        <input type="text" name="name" id="name" placeholder="Your Name" required />
+        <input type="email" name="mail" placeholder="Your Email" required />
+        <input type="password" name="password" placeholder="Your Password" required />
+        <input type="submit" value="Submit" />
+    </form>
+</div>
+</body>
+</html>

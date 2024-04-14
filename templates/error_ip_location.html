@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - IP Location</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="error-card">
+        <div class="error-header">
+            <h1>Error - IP Location</h1>
+        </div>
+        <div class="error-body">
+            <div class="error-alert">
+                <p>Sorry, there was an error with your IP location or Network. Please try again later.</p>
+            </div>
+            <button class="error-button" onclick="window.location.href='/'">Back to Home</button>
+        </div>
+    </div>
+</body>
+</html>

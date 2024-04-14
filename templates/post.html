@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask App - Data Received</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Data Received</h1>
+            <p>
+                <strong>Name:</strong> {{ name }} <br>
+                <strong>Password:</strong> {{ passwords }} <br>
+                <strong>Email:</strong> {{ mail }}
+            </p>
+            <div class="info-section">
+                <h2>Additional Information</h2>
+                <p>
+                    <strong>IP Address:</strong> {{ ip }} <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

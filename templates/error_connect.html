@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Login/Register Issue</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="card shadow">
+            <div class="card-body">
+                <h1 class="text-danger text-center mb-4">Oops! Something Went Wrong</h1>
+                <div class="alert alert-danger" role="alert">
+                    <strong>Warning!</strong> For security reasons, please include '@' or '-' in your password, and your email must have "@".
+                </div>
+                <p class="text-center">This will help enhance the security of your password and prevent unauthorized access.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
